@@ -326,7 +326,7 @@ This ENSO prediction model has practical applications in:
 
 *Data Source: NOAA Climate Prediction Center | Model: Deep Learning LSTM*
 
-**Repository**: 
+**Repository**: https://github.com/bhanuvi17/enso-event-prediction.git
 
 **Happy Forecasting! 🌊📈**
 

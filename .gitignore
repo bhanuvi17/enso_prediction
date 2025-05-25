@@ -1,0 +1,146 @@
+# ENSO Prediction Project .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+
+# Virtual Environments
+enso/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Data files (uncomment if you want to exclude large datasets)
+# *.csv
+# *.xlsx
+# *.xls
+# data/raw/
+# data/processed/
+
+# Model files (large trained models - uncomment if models are too large for git)
+# models/*.keras
+# models/*.h5
+# models/*.pkl
+# models/*.joblib
+# *.model
+
+# Streamlit
+streamlit_app.log
+.streamlit/secrets.toml
+
+# TensorFlow/Keras
+*.h5
+*.hdf5
+logs/
+tensorboard_logs/
+
+# Scikit-learn
+*.joblib
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Files
+# Windows
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Linux
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Logs and Runtime
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Testing and Coverage
+coverage/
+*.cover
+.hypothesis/
+.pytest_cache/
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+
+# Cache and Temp
+.cache/
+cache/
+temp/
+tmp/
+*.bak
+*.backup
+*.tmp
+
+# Output files
+output/
+results/
+exports/
+downloads/
+
+# Documentation
+docs/_build/
+.readthedocs.yml
+
+# Type checkers
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# Project specific
+config.ini
+secrets.json
+api_keys.txt
