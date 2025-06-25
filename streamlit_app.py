@@ -1,4 +1,3 @@
-# streamlit_app.py
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -11,7 +10,6 @@ from datetime import datetime, timedelta
 import io
 import base64
 
-# Page configuration
 st.set_page_config(
     page_title="ENSO Prediction Dashboard",
     page_icon="🌊",
@@ -19,7 +17,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
 st.markdown("""
 <style>
     .main-header {
@@ -45,10 +42,8 @@ st.markdown("""
 def load_data_and_model():
     """Load the trained model and data"""
     try:
-        # Load data
         df_enso = pd.read_csv('models/enso_data.csv', index_col=0, parse_dates=True)
         
-        # Load model components
         model = load_model('models/lstm_enso_model.keras')
         X_scaler = joblib.load('models/X_scaler.pkl')
         y_scaler = joblib.load('models/y_scaler.pkl')
@@ -83,7 +78,6 @@ def get_enso_color(category):
 
 def create_oni_timeseries_plot(df, start_date, end_date):
     """Create ONI time series plot with ENSO events"""
-    # Filter data
     mask = (df.index >= start_date) & (df.index <= end_date)
     filtered_df = df[mask].copy()
     
@@ -91,12 +85,10 @@ def create_oni_timeseries_plot(df, start_date, end_date):
         return go.Figure().add_annotation(text="No data available for selected date range", 
                                          xref="paper", yref="paper", x=0.5, y=0.5, showarrow=False)
     
-    # Classify ENSO events
     filtered_df['ENSO_Category'] = classify_enso(filtered_df['ONI'].values)
     
     fig = go.Figure()
     
-    # Add ONI line
     fig.add_trace(go.Scatter(
         x=filtered_df.index,
         y=filtered_df['ONI'],
@@ -106,7 +98,6 @@ def create_oni_timeseries_plot(df, start_date, end_date):
         hovertemplate='<b>Date:</b> %{x}<br><b>ONI:</b> %{y:.2f}<br><extra></extra>'
     ))
     
-    # Color background by ENSO events
     for category in ['El Niño', 'La Niña', 'Neutral']:
         category_data = filtered_df[filtered_df['ENSO_Category'] == category]
         if not category_data.empty:
@@ -119,14 +110,12 @@ def create_oni_timeseries_plot(df, start_date, end_date):
                 hovertemplate=f'<b>{category}</b><br><b>Date:</b> %{{x}}<br><b>ONI:</b> %{{y:.2f}}<br><extra></extra>'
             ))
     
-    # Add threshold lines
     fig.add_hline(y=0.5, line_dash="dash", line_color="red", opacity=0.7, 
                   annotation_text="El Niño Threshold (+0.5)", annotation_position="bottom right")
     fig.add_hline(y=-0.5, line_dash="dash", line_color="blue", opacity=0.7,
                   annotation_text="La Niña Threshold (-0.5)", annotation_position="top right")
     fig.add_hline(y=0, line_dash="dot", line_color="gray", opacity=0.5)
     
-    # Add intensity bands with valid annotation positions
     fig.add_hrect(y0=0.5, y1=1.0, fillcolor="red", opacity=0.1, 
                   annotation_text="Moderate El Niño", annotation_position="top left")
     fig.add_hrect(y0=1.0, y1=1.5, fillcolor="red", opacity=0.2, 
@@ -157,13 +146,11 @@ def create_oni_timeseries_plot(df, start_date, end_date):
 def create_prediction_plot(df, model_info, model, X_scaler, y_scaler):
     """Create prediction results plot with forecasting"""
     try:
-        # Get model parameters
         n_in = model_info['n_in']
         n_out = model_info['n_out']
         train_end = model_info['train_end']
         valid_end = model_info['valid_end']
         
-        # Create figure with subplots
         fig = make_subplots(
             rows=2, cols=1,
             subplot_titles=('Historical Data with Predictions', 'Forecast for Next Periods'),
@@ -171,8 +158,6 @@ def create_prediction_plot(df, model_info, model, X_scaler, y_scaler):
             row_heights=[0.7, 0.3]
         )
         
-        # Plot 1: Historical data with predictions
-        # Training data
         train_data = df.iloc[:train_end]
         fig.add_trace(go.Scatter(
             x=train_data.index,
@@ -183,7 +168,6 @@ def create_prediction_plot(df, model_info, model, X_scaler, y_scaler):
             opacity=0.7
         ), row=1, col=1)
         
-        # Validation data  
         valid_data = df.iloc[train_end:valid_end]
         fig.add_trace(go.Scatter(
             x=valid_data.index,
@@ -194,7 +178,6 @@ def create_prediction_plot(df, model_info, model, X_scaler, y_scaler):
             opacity=0.7
         ), row=1, col=1)
         
-        # Test data (actual)
         test_start_idx = valid_end
         test_dates = df.index[test_start_idx:test_start_idx + len(model_info['y_true'])]
         fig.add_trace(go.Scatter(
@@ -206,7 +189,6 @@ def create_prediction_plot(df, model_info, model, X_scaler, y_scaler):
             marker=dict(size=4)
         ), row=1, col=1)
         
-        # Predictions
         fig.add_trace(go.Scatter(
             x=test_dates,
             y=model_info['y_pred'][:, 0],
@@ -216,11 +198,9 @@ def create_prediction_plot(df, model_info, model, X_scaler, y_scaler):
             marker=dict(size=4, symbol='square')
         ), row=1, col=1)
         
-        # Add vertical lines for data splits
         fig.add_vline(x=df.index[train_end], line_dash="dash", line_color="gray", opacity=0.5, row=1, col=1)
         fig.add_vline(x=df.index[valid_end], line_dash="dash", line_color="gray", opacity=0.5, row=1, col=1)
         
-        # Plot 2: Generate and show forecast
         last_sequence = df['ONI'].tail(n_in).values.reshape(1, -1)
         last_sequence_scaled = X_scaler.transform(last_sequence)
         last_sequence_scaled = last_sequence_scaled.reshape(1, n_in, 1)
@@ -228,7 +208,6 @@ def create_prediction_plot(df, model_info, model, X_scaler, y_scaler):
         forecast_scaled = model.predict(last_sequence_scaled, verbose=0)
         forecast = y_scaler.inverse_transform(forecast_scaled)
         
-        # Create forecast dates
         last_date = df.index[-1]
         forecast_dates = pd.date_range(
             start=last_date + pd.DateOffset(months=1),
@@ -236,7 +215,6 @@ def create_prediction_plot(df, model_info, model, X_scaler, y_scaler):
             freq='MS'
         )
         
-        # Recent history for context
         recent_data = df['ONI'].tail(24)
         fig.add_trace(go.Scatter(
             x=recent_data.index,
@@ -247,7 +225,6 @@ def create_prediction_plot(df, model_info, model, X_scaler, y_scaler):
             showlegend=False
         ), row=2, col=1)
         
-        # Forecast
         fig.add_trace(go.Scatter(
             x=forecast_dates,
             y=forecast[0],
@@ -257,10 +234,8 @@ def create_prediction_plot(df, model_info, model, X_scaler, y_scaler):
             marker=dict(size=8, symbol='diamond')
         ), row=2, col=1)
         
-        # Add vertical line at forecast start
         fig.add_vline(x=df.index[-1], line_dash="dash", line_color="gray", opacity=0.7, row=2, col=1)
         
-        # Add threshold lines to both subplots
         for row in [1, 2]:
             fig.add_hline(y=0.5, line_dash="dot", line_color="red", opacity=0.5, row=row, col=1)
             fig.add_hline(y=-0.5, line_dash="dot", line_color="blue", opacity=0.5, row=row, col=1)
@@ -279,7 +254,6 @@ def create_prediction_plot(df, model_info, model, X_scaler, y_scaler):
         fig.update_yaxes(title_text="ONI Value", row=1, col=1)
         fig.update_yaxes(title_text="ONI Value", row=2, col=1)
         
-        # Store forecast data for download
         forecast_df = pd.DataFrame({
             'Date': forecast_dates,
             'Forecast_ONI': forecast[0],
@@ -310,7 +284,6 @@ def calculate_summary_stats(df, start_date, end_date):
         'max_date': filtered_df['ONI'].idxmax()
     }
     
-    # ENSO event counts
     enso_categories = classify_enso(filtered_df['ONI'].values)
     unique, counts = np.unique(enso_categories, return_counts=True)
     enso_counts = dict(zip(unique, counts))
@@ -325,23 +298,18 @@ def create_download_link(df, filename, text):
     href = f'<a href="data:file/csv;base64,{b64}" download="{filename}">{text}</a>'
     return href
 
-# Main app
 def main():
-    # Header
     st.markdown('<h1 class="main-header">🌊 ENSO Prediction Dashboard</h1>', unsafe_allow_html=True)
     st.markdown("---")
     
-    # Load data and model
     with st.spinner("Loading model and data..."):
         df_enso, model, X_scaler, y_scaler, model_info = load_data_and_model()
     
     if df_enso is None:
         st.stop()
     
-    # Sidebar controls
     st.sidebar.markdown("## 📊 Dashboard Controls")
     
-    # Date range selector
     min_date = df_enso.index.min().date()
     max_date = df_enso.index.max().date()
     
@@ -351,13 +319,11 @@ def main():
     with col2:
         end_date = st.date_input("End Date", max_date, min_value=min_date, max_value=max_date)
     
-    # Plot selection
     plot_option = st.sidebar.selectbox(
         "Select Visualization",
         ["Both Plots", "ONI Time Series", "Predictions & Forecast"]
     )
     
-    # Model performance metrics
     st.sidebar.markdown("## 🎯 Model Performance")
     if model_info:
         metrics = model_info['metrics']
@@ -368,7 +334,6 @@ def main():
         st.sidebar.metric("MAE", f"{metrics['MAE']:.3f}")
         st.sidebar.metric("RMSE", f"{metrics['RMSE']:.3f}")
     
-    # Summary statistics
     st.sidebar.markdown("## 📈 Data Summary")
     stats = calculate_summary_stats(df_enso, pd.Timestamp(start_date), pd.Timestamp(end_date))
     
@@ -381,21 +346,18 @@ def main():
             st.metric("Maximum ONI", f"{stats['max']:.2f}")
             st.metric("Std Deviation", f"{stats['std']:.2f}")
         
-        # ENSO event counts
         st.sidebar.markdown("### ENSO Event Counts")
         for category in ['El Niño', 'La Niña', 'Neutral']:
             count = stats.get(category, 0)
             percentage = (count / stats['count']) * 100 if stats['count'] > 0 else 0
             st.sidebar.write(f"**{category}:** {count} ({percentage:.1f}%)")
     
-    # Main content area
     if plot_option in ["Both Plots", "ONI Time Series"]:
         st.markdown("## 🌊 ONI Time Series with ENSO Events")
         with st.spinner("Creating ONI time series plot..."):
             oni_fig = create_oni_timeseries_plot(df_enso, pd.Timestamp(start_date), pd.Timestamp(end_date))
             st.plotly_chart(oni_fig, use_container_width=True)
         
-        # Download button for ONI data
         filtered_data = df_enso[(df_enso.index >= pd.Timestamp(start_date)) & 
                                (df_enso.index <= pd.Timestamp(end_date))].copy()
         if not filtered_data.empty:
@@ -409,11 +371,9 @@ def main():
             pred_fig, forecast_df = create_prediction_plot(df_enso, model_info, model, X_scaler, y_scaler)
             st.plotly_chart(pred_fig, use_container_width=True)
         
-        # Display forecast table
         if not forecast_df.empty:
             st.markdown("### 📅 Forecast Values")
             
-            # Format the forecast table
             forecast_display = forecast_df.copy()
             forecast_display['Date'] = forecast_display['Date'].dt.strftime('%Y-%m')
             forecast_display['Forecast_ONI'] = forecast_display['Forecast_ONI'].round(3)
@@ -423,25 +383,21 @@ def main():
                 'ENSO_Category': 'Predicted Event'
             })
             
-            # Display as styled table
             st.dataframe(
                 forecast_display,
                 use_container_width=True,
                 hide_index=True
             )
             
-            # Download forecast data
             st.markdown(create_download_link(forecast_df, "enso_forecast.csv", 
                                            "📥 Download Forecast Data"), unsafe_allow_html=True)
             
-            # Forecast interpretation
             st.markdown("### 🔍 Forecast Interpretation")
             for _, row in forecast_display.iterrows():
                 month = row['Month']
                 oni_val = row['Predicted ONI']
                 event = row['Predicted Event']
                 
-                # Color code the interpretation
                 if event == 'El Niño':
                     color = "#FF6B6B"
                     icon = "🔥"
@@ -458,7 +414,6 @@ def main():
                 </div>
                 """, unsafe_allow_html=True)
     
-    # Additional insights section
     st.markdown("## 💡 Key Insights")
     
     col1, col2, col3 = st.columns(3)
@@ -482,7 +437,6 @@ def main():
         - **Impact:** Global weather patterns
         """)
     
-    # Footer
     st.markdown("---")
     st.markdown("""
     <div style="text-align: center; color: #666;">
