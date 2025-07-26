@@ -40,7 +40,6 @@ st.markdown("""
 
 @st.cache_data
 def load_data_and_model():
-    """Load the trained model and data"""
     try:
         df_enso = pd.read_csv('models/enso_data.csv', index_col=0, parse_dates=True)
         
@@ -56,7 +55,6 @@ def load_data_and_model():
         return None, None, None, None, None
 
 def classify_enso(oni_values):
-    """Classify ONI values into ENSO categories"""
     if isinstance(oni_values, (int, float)):
         oni_values = np.array([oni_values])
     
@@ -68,7 +66,6 @@ def classify_enso(oni_values):
     return np.select(conditions, choices, default='Neutral')
 
 def get_enso_color(category):
-    """Get color for ENSO category"""
     colors = {
         'El Niño': '#FF6B6B',
         'La Niña': '#4ECDC4', 
@@ -77,7 +74,6 @@ def get_enso_color(category):
     return colors.get(category, '#888888')
 
 def create_oni_timeseries_plot(df, start_date, end_date):
-    """Create ONI time series plot with ENSO events"""
     mask = (df.index >= start_date) & (df.index <= end_date)
     filtered_df = df[mask].copy()
     
@@ -144,7 +140,6 @@ def create_oni_timeseries_plot(df, start_date, end_date):
     return fig
 
 def create_prediction_plot(df, model_info, model, X_scaler, y_scaler):
-    """Create prediction results plot with forecasting"""
     try:
         n_in = model_info['n_in']
         n_out = model_info['n_out']
@@ -267,7 +262,6 @@ def create_prediction_plot(df, model_info, model, X_scaler, y_scaler):
         return go.Figure(), pd.DataFrame()
 
 def calculate_summary_stats(df, start_date, end_date):
-    """Calculate summary statistics for selected date range"""
     mask = (df.index >= start_date) & (df.index <= end_date)
     filtered_df = df[mask]
     
@@ -292,7 +286,6 @@ def calculate_summary_stats(df, start_date, end_date):
     return stats
 
 def create_download_link(df, filename, text):
-    """Create a download link for dataframe"""
     csv = df.to_csv(index=True)
     b64 = base64.b64encode(csv.encode()).decode()
     href = f'<a href="data:file/csv;base64,{b64}" download="{filename}">{text}</a>'

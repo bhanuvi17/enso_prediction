@@ -14,7 +14,6 @@ import joblib
 import os
 
 def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
-    """Frame a time series as a supervised learning dataset"""
     df = pd.DataFrame(data)
     cols, names = list(), list()
     
@@ -38,7 +37,6 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
     return agg
 
 def classify_enso(oni_values):
-    """Classify ONI values into ENSO categories"""
     conditions = [
         oni_values >= 0.5,   # El Niño
         oni_values <= -0.5,  # La Niña
@@ -47,7 +45,6 @@ def classify_enso(oni_values):
     return np.select(conditions, choices, default='Neutral')
 
 def calculate_metrics(y_true, y_pred):
-    """Calculate comprehensive regression metrics"""
     y_true_flat = y_true.flatten()
     y_pred_flat = y_pred.flatten()
     
@@ -59,7 +56,6 @@ def calculate_metrics(y_true, y_pred):
     return {'MAE': mae, 'RMSE': rmse, 'R²': r2, 'MAPE': mape}
 
 def train_enso_model(data_path='ENSO.csv'):
-    """Main training function"""
     print("Loading and preprocessing data...")
     
     df_enso = pd.read_csv(data_path, parse_dates=[0])
@@ -122,11 +118,12 @@ def train_enso_model(data_path='ENSO.csv'):
     
     print("Building LSTM model...")
     model = Sequential(name='lstm_enso')
-    model.add(LSTM(64, input_shape=(n_in, n_features), return_sequences=True, dropout=0.2, recurrent_dropout=0.2))
-    model.add(LSTM(32, dropout=0.2, recurrent_dropout=0.2))
-    model.add(Dense(16, activation='relu'))
+    model.add(LSTM(128, input_shape=(n_in, n_features), return_sequences=True))
+    model.add(LSTM(64))
+    model.add(Dense(32, activation='relu'))
     model.add(Dropout(0.2))
     model.add(Dense(n_out))
+
     
     model.compile(optimizer='adam', loss='mse', metrics=['mae', RootMeanSquaredError()])
     
@@ -138,7 +135,7 @@ def train_enso_model(data_path='ENSO.csv'):
         X_train_scaled, y_train_scaled,
         validation_data=(X_valid_scaled, y_valid_scaled),
         epochs=100,
-        batch_size=16,
+        batch_size=128,
         callbacks=[early_stop, reduce_lr],
         shuffle=False,
         verbose=1
