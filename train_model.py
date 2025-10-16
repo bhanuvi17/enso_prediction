@@ -61,8 +61,8 @@ def train_enso_model(data_path='ENSO.csv'):
     df_enso = pd.read_csv(data_path, parse_dates=[0])
     df_enso.set_index('Date', inplace=True)
     
-    n_in = 12  
-    n_out = 3  
+    n_in = 20  
+    n_out = 5 
     n_features = 1
     
     n_total = len(df_enso)
