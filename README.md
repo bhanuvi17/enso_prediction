@@ -2,7 +2,7 @@
 
 A machine learning project for predicting El Niño-Southern Oscillation (ENSO) events using LSTM neural networks. This project analyzes historical Oceanic Niño Index (ONI) data to forecast future ENSO conditions and classify them into El Niño, La Niña, or Neutral phases.
 
-## 🌊 Overview
+## Overview
 
 The El Niño-Southern Oscillation (ENSO) is a climate pattern that describes the unusual warming or cooling of surface waters in the eastern tropical Pacific Ocean. This project uses deep learning techniques to:
 
@@ -11,7 +11,7 @@ The El Niño-Southern Oscillation (ENSO) is a climate pattern that describes the
 - Provide interactive visualizations through a comprehensive Streamlit dashboard
 - Achieve 83.1% classification accuracy and R² score of 0.785
 
-## 🚀 Features
+## Features
 
 - **LSTM Neural Network**: Deep learning model optimized for time series forecasting
 - **Multi-step Prediction**: Forecasts ONI values for 1, 2, and 3 months ahead
@@ -20,7 +20,7 @@ The El Niño-Southern Oscillation (ENSO) is a climate pattern that describes the
 - **Comprehensive Metrics**: Multiple evaluation metrics including 83.1% classification accuracy, R² of 0.785, MAE of 0.297, and RMSE of 0.382
 - **Model Persistence**: Trained models and scalers saved for deployment
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ENSO-Events-Prediction/
@@ -38,7 +38,7 @@ ENSO-Events-Prediction/
 └── .gitignore                # Git ignore file
 ```
 
-## 🛠️ Installation
+## Installation
 
 ### Prerequisites
 
@@ -64,7 +64,7 @@ ENSO-Events-Prediction/
    pip install -r requirements.txt
    ```
 
-## 📊 Dataset
+## Dataset
 
 The project uses historical Oceanic Niño Index (ONI) data, which measures sea surface temperature anomalies in the Niño 3.4 region of the Pacific Ocean.
 
@@ -77,7 +77,7 @@ The project uses historical Oceanic Niño Index (ONI) data, which measures sea s
 - **La Niña**: ONI ≤ -0.5°C
 - **Neutral**: -0.5°C < ONI < +0.5°C
 
-## 🏃‍♂️ Usage
+## Usage
 
 ### Training the Model
 
@@ -110,7 +110,7 @@ The web app provides:
 - **Performance Metrics**: Live model accuracy and statistical measures
 - **ENSO Insights**: Comprehensive understanding of climate patterns
 
-## 🧠 Model Architecture
+## Model Architecture
 
 ### LSTM Neural Network
 
@@ -137,7 +137,7 @@ Total params: 29,891
 - **Optimization**: Adam optimizer with learning rate reduction
 - **Early Stopping**: Prevents overfitting with patience of 15 epochs
 
-## 📈 Model Performance
+## Model Performance
 
 The model demonstrates strong predictive capabilities with the following verified performance metrics:
 
@@ -163,17 +163,7 @@ The model demonstrates strong predictive capabilities with the following verifie
 - **La Niña Events**: 274 occurrences (30.3%)
 - **Neutral Conditions**: 372 occurrences (41.2%)
 
-## 🔮 Current Forecast (Example Output)
-
-The model provides 3-month ahead predictions with automatic interpretation:
-
-```
-📅 April 2025: ONI = -0.306°C → Neutral Conditions
-📅 May 2025: ONI = -0.286°C → Neutral Conditions  
-📅 June 2025: ONI = -0.259°C → Neutral Conditions
-```
-
-## 🔧 Configuration
+## Configuration
 
 ### Model Parameters
 
@@ -187,7 +177,7 @@ epochs = 100       # Maximum training epochs
 batch_size = 16    # Training batch size
 ```
 
-## 📊 Dashboard Features
+## Dashboard Features
 
 ### Interactive Controls
 - **Date Range Selection**: Custom start and end dates for analysis
@@ -204,7 +194,7 @@ batch_size = 16    # Training batch size
 - **Forecast Export**: Prediction results with timestamps
 - **Multiple Formats**: Support for various data formats
 
-## 💡 Key Model Insights
+## Key Model Insights
 
 ### Strengths
 - **La Niña Detection**: Excellent performance in identifying cooling events
@@ -217,7 +207,7 @@ batch_size = 16    # Training batch size
 - **Validation**: 10% of historical data  
 - **Testing**: 10% of historical data
 
-## 📋 Requirements
+## Requirements
 
 ### Core Dependencies
 
@@ -239,7 +229,7 @@ jupyter>=1.0.0
 seaborn>=0.12.0
 ```
 
-## 🚀 Deployment
+## Deployment
 
 ### Local Deployment
 
@@ -255,7 +245,7 @@ The application can be deployed on various cloud platforms:
 - **Heroku**: Use `Procfile` and `setup.sh` for deployment
 - **AWS/GCP/Azure**: Container-based deployment with Docker
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please follow these steps:
 
@@ -273,44 +263,35 @@ Contributions are welcome! Please follow these steps:
 - Real-time data integration
 - Mobile application development
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - National Oceanic and Atmospheric Administration (NOAA) for ENSO data
 - TensorFlow and Keras teams for deep learning frameworks
 - Streamlit team for the web application framework
 - Climate research community for ENSO understanding
 
-## 📚 References
+## References
 
 1. Trenberth, K. E. (1997). The definition of El Niño. Bulletin of the American Meteorological Society.
 2. Philander, S. G. (1990). El Niño, La Niña, and the Southern Oscillation.
 3. NOAA Climate Prediction Center - ENSO: Cold & Warm Episodes by Season
 
-## 🐛 Issues and Support
-
-If you encounter any issues or have questions:
-
-1. Check the [Issues](../../issues) section for existing problems
-2. Create a new issue with detailed description
-3. Include error messages, screenshots, and system information
-4. Tag the issue appropriately (bug, enhancement, question)
-
-## 📊 Model Metrics Dashboard
+## Model Metrics Dashboard
 
 Monitor your model's performance with these key indicators:
 
 | Metric | Target | Achieved |
 |--------|--------|----------|
-| Classification Accuracy | >80% | **83.1%** ✅ |
-| R² Score | >0.75 | **0.785** ✅ |
-| MAE | <0.35°C | **0.297°C** ✅ |
-| RMSE | <0.40°C | **0.382°C** ✅ |
+| Classification Accuracy | >80% | **87.1%** |
+| R² Score | >0.75 | **0.785** |
+| MAE | <0.35°C | **0.297°C** |
+| RMSE | <0.40°C | **0.382°C** |
 
-## 🌍 Real-world Applications
+## Real-world Applications
 
 This ENSO prediction model has practical applications in:
 
@@ -322,7 +303,7 @@ This ENSO prediction model has practical applications in:
 
 ---
 
-**🌊 ENSO Prediction Dashboard | Built with Streamlit & LSTM Neural Networks**
+** ENSO Prediction Dashboard | Built with Streamlit & LSTM Neural Networks**
 
 *Data Source: NOAA Climate Prediction Center | Model: Deep Learning LSTM*
 
