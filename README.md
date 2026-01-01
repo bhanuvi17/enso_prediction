@@ -303,12 +303,8 @@ This ENSO prediction model has practical applications in:
 
 ---
 
-** ENSO Prediction Dashboard | Built with Streamlit & LSTM Neural Networks**
+## ENSO Prediction Dashboard | Built with Streamlit & LSTM Neural Networks**
 
 *Data Source: NOAA Climate Prediction Center | Model: Deep Learning LSTM*
 
 **Repository**: https://github.com/bhanuvi17/enso_prediction.git
-
-**Happy Forecasting! 🌊📈**
-
-For more information, please visit our [documentation](../../wiki) or contact the development team.
