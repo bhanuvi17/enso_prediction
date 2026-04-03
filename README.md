@@ -233,11 +233,7 @@ seaborn>=0.12.0
 
 ### Cloud Deployment
 
-The application can be deployed on various cloud platforms:
-
 - **Streamlit Cloud**: Direct deployment from GitHub repository
-- **Heroku**: Use `Procfile` and `setup.sh` for deployment
-- **AWS/GCP/Azure**: Container-based deployment with Docker
 
 ## Contributing
 
@@ -286,8 +282,4 @@ This ENSO prediction model has practical applications in:
 
 ---
 
-## ENSO Prediction Dashboard | Built with Streamlit & LSTM Neural Networks**
-
 *Data Source: NOAA Climate Prediction Center | Model: Deep Learning LSTM*
-
-**Repository**: https://github.com/bhanuvi17/enso_prediction.git
